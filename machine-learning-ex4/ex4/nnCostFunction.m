@@ -71,21 +71,28 @@ for i = 1:m
 	delta2 = delta2 + d3' * a2;
 	
 end;
-J = J/m;
+
+J = J / m;
 
 Theta1_grad = delta1 / m;
 Theta2_grad = delta2 / m;
 
+%cost regularization
 tt1 = Theta1;
 tt1(:,1) = 0;
-tt1 = tt1.^2;
+tttt1 = tt1.^2;
 tt2 = Theta2;
 tt2(:,1) = 0;
-tt2 = tt2.^2;
-l = sum(tt1(:)) + sum(tt2(:));
+tttt2 = tt2.^2;
+l = sum(tttt1(:)) + sum(tttt2(:));
+
 J = J + l * lambda / 2 / m;
 
+%grad regularization
+Theta1_grad = Theta1_grad + (lambda / m) .* tt1;
+Theta2_grad = Theta2_grad + (lambda / m) .* tt2;
 
+% unroll
 grad = [Theta1_grad(:); Theta2_grad(:)];
 
 % ====================== YOUR CODE HERE ======================

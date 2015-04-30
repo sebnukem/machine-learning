@@ -39,10 +39,10 @@ Theta2_grad = zeros(size(Theta2));
 %         cost function computation is correct by verifying the cost
 %         computed in ex4.m
 
-size(X)
-size(Theta1)
-size(Theta2)
-size(y)
+size(X) % 5000x400
+size(Theta1) % 25%401
+size(Theta2) % 10%26
+size(y) % 5000x1
 
 X = [ones(m, 1) X];
 Y = zeros(m, 10);
@@ -51,23 +51,32 @@ for i = 1:m
 end;
 
 for i = 1:m
+	%fw
 	a1 = X(i,:);
 	H1 = sigmoid(a1 * Theta1');
 
 	a2 = [1 H1];
-	H2 = sigmoid(a2 * Theta2');
+	H2 = sigmoid(a2 * Theta2'); % a3
 
 	yy = Y(i,:);
+%size(yy) % 1x10
+%size(H2) % 1x10
 	cost = -yy .* log(H2) - (1-yy) .* log(1-H2);
 
 	J = J + sum(cost);
+
+	%bp
+	d3 = H2 - yy;
+	d2 = d3 * Theta2 .* (a2 .* (1 - a2));
 end;
 J = J/m;
 
 tt1 = Theta1;
 tt1(:,1) = 0;
+tt1 = tt1.^2;
 tt2 = Theta2;
 tt2(:,1) = 0;
+tt2 = tt2.^2;
 l = sum(tt1(:)) + sum(tt2(:));
 J = J + l * lambda / 2 / m;
 
